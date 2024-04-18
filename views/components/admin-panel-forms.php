@@ -26,10 +26,11 @@ if (!$user || $user['role_id'] != '1') {
     <div class="form form2">
         <!-- Выбор действия -->
         <form id="action-form">
-            <h3 style="text-align: center; margin: 10px">Управление мероприятиями</h3>
+            <h3 style="text-align: center; margin: 10px">Управление и Редактирование</h3>
             <select id="action-select">
                 <option value="add">Добавить мероприятие</option>
                 <option value="edit">Редактировать мероприятие</option>
+                <option value="create_user">Создать пользователя</option>
             </select>
         </form>
 
@@ -74,6 +75,25 @@ if (!$user || $user['role_id'] != '1') {
             <label for="date">Дата:</label>
             <input type="datetime-local" id="date" name="date">
             <input type="submit" value="Сохранить">
+        </form>
+
+        <form action="/handlers/admin-panel-handler.php" method="post" id="create-user-form" style="display: none;">
+            <h2>Создание нового пользователя</h2>
+            <input type="hidden" name="action" value="create_user" autocomplete="off">
+            <label for="name">Имя:</label>
+            <input type="text" id="name" name="name" autocomplete="off">
+            <label for="surname">Фамилия:</label>
+            <input type="text" id="surname" name="surname" autocomplete="off">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" autocomplete="off">
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" autocomplete="off">
+            <label for="role">Роль:</label>
+            <select id="role" name="role">
+                <option value="admin">Админ</option>
+                <option value="user">Пользователь</option>
+            </select>
+            <input type="submit" value="Создать">
         </form>
     </div>
 
@@ -129,15 +149,12 @@ if (!$user || $user['role_id'] != '1') {
             ?>
         </div>
     </div>
-
-
-
-
 </div>
 
 <script>
     document.getElementById('action-select').addEventListener('change', function() {
         document.getElementById('add-form').style.display = this.value === 'add' ? 'block' : 'none';
         document.getElementById('edit-form').style.display = this.value === 'edit' ? 'block' : 'none';
+        document.getElementById('create-user-form').style.display = this.value === 'create_user' ? 'block' : 'none';
     });
 </script>

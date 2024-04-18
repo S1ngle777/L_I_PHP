@@ -26,4 +26,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: /views/pages/admin-panel.php");
     exit;
 }
+if ($action === 'create_user') {
+    // Создание нового пользователя
+    $name = $_POST['name'];
+    $surname = $_POST['surname'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $role = $_POST['role'];
+    if ($role === 'admin') {
+        $role = 1;
+    } else {
+        $role = 2;
+    }
+    $query = $db->prepare('INSERT INTO users (name, surname, email, password, role) VALUES (?, ?, ?, ?, ?)');
+    $query->execute([$name, $surname, $email, $password, $role]);
+}
 ?>
