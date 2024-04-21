@@ -1,3 +1,14 @@
+<?php
+
+/**
+ * Файл представления для страницы авторизации.
+ *
+ * Этот файл содержит HTML-разметку и PHP-код для отображения страницы авторизации.
+ * Он подключает необходимые файлы и выводит форму авторизации.
+ *
+ * @package views/pages
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,10 +22,8 @@
 <body>
     <?php
     require './handlers/page.php';
-    
 
     Page::part('autorisation-form');
-    Page::part('footer');
     ?>
 
 

@@ -5,8 +5,15 @@
             <label for="event_id">Название мероприятия:</label>
             <select name="event_id" id="event_id">
                 <?php
-                // Подключение к базе данных
-                $db = new PDO('mysql:host=localhost;dbname=event_platform', 'root', '123qweasd');
+                require __DIR__ . '/../../handlers/db-connection.php';
+
+                // Проверка, авторизован ли пользователь
+                if (!isset($_COOKIE['token'])) {
+                    // Перенаправление на страницу авторизации
+                    header("Location: /views/pages/autorisation.php");
+                    exit;
+                }
+
 
                 // Получение всех мероприятий
                 $query = $db->prepare('SELECT * FROM events');

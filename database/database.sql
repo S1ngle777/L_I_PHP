@@ -26,14 +26,17 @@ CREATE TABLE IF NOT EXISTS `events` (
   `price` decimal(10,2) DEFAULT NULL,
   `number_seats` int(11) DEFAULT NULL,
   `date` datetime DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Дамп данных таблицы event_platform.events: ~3 rows (приблизительно)
-INSERT INTO `events` (`id`, `name`, `price`, `number_seats`, `date`) VALUES
-	(1, 'Circus', 100.00, 50, '2023-12-31 12:00:00'),
-	(2, 'New Year', 200.00, 100, '2024-01-01 00:00:00'),
-	(3, 'Day of the city', 0.00, 150, '2024-04-12 18:00:00');
+-- Дамп данных таблицы event_platform.events: ~4 rows (приблизительно)
+DELETE FROM `events`;
+INSERT INTO `events` (`id`, `name`, `price`, `number_seats`, `date`, `image`) VALUES
+	(1, 'Circus', 100.00, 50, '2023-12-31 12:00:00', 'circus.jpg'),
+	(2, 'New Year', 200.00, 100, '2024-01-01 00:00:00', 'new_year.jpg'),
+	(3, 'Day of the city', 0.00, 150, '2024-04-12 18:00:00', 'day_of_the_city.jpg'),
+	(8, 'test', 10.00, 1, '2024-04-21 14:40:00', '8c8a48e28a8452c9486e2eaf9f485303.jpg');
 
 -- Дамп структуры для таблица event_platform.event_records
 CREATE TABLE IF NOT EXISTS `event_records` (
@@ -45,14 +48,18 @@ CREATE TABLE IF NOT EXISTS `event_records` (
   KEY `event_id` (`event_id`),
   CONSTRAINT `event_records_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `event_records_ibfk_2` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Дамп данных таблицы event_platform.event_records: ~4 rows (приблизительно)
+-- Дамп данных таблицы event_platform.event_records: ~5 rows (приблизительно)
+DELETE FROM `event_records`;
 INSERT INTO `event_records` (`id`, `user_id`, `event_id`) VALUES
 	(1, 2, 1),
 	(2, 2, 1),
 	(3, 3, 1),
-	(4, 4, 3);
+	(4, 4, 3),
+	(34, 4, 8),
+	(35, 3, 2),
+	(36, 3, 3);
 
 -- Дамп структуры для таблица event_platform.roles
 CREATE TABLE IF NOT EXISTS `roles` (
@@ -62,6 +69,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Дамп данных таблицы event_platform.roles: ~2 rows (приблизительно)
+DELETE FROM `roles`;
 INSERT INTO `roles` (`id`, `name`) VALUES
 	(1, 'manager'),
 	(2, 'user');
@@ -79,13 +87,14 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `email` (`email`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Дамп данных таблицы event_platform.users: ~5 rows (приблизительно)
+DELETE FROM `users`;
 INSERT INTO `users` (`id`, `name`, `surname`, `email`, `role_id`, `token`, `password`) VALUES
 	(1, 'John', 'Doe', 'john.doe@example.com', 1, NULL, NULL),
 	(2, 'Jane', 'Doe', 'jane.doe@example.com', 2, NULL, NULL),
-	(3, '123', '123', '123@gmail.com', 1, NULL, '$2y$10$VQx28hOTYtISNdPrWCOTIOUOJTtoKlNKX0T09mLnfH4RCNkgOvu4C'),
+	(3, '123', '123', '123@gmail.com', 1, NULL, '$2y$10$WzHbUAzdxmq50wTnpgauROY2kdszAsLzcXll.TVVMkAynQf4nOV9.'),
 	(4, 'Nikita', 'Nikita', 'nikita@gmail.com', 2, NULL, '$2y$10$Yq/sXtQlY7uFhyKcXlYfKegL6F7aOj2kpent98.aQ31UkLsF9wQBq'),
 	(5, 'admin', 'admin', 'admin@gmail.com', 1, NULL, '$2y$10$CdEIgpa6Zb1LfSdpSkhogenEcbVHYZXtFqVV.bkIGTvl2Pa6dVkmu');
 

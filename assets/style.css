@@ -100,6 +100,8 @@ footer {
     flex-wrap: wrap;
 }
 
+
+
 .back {
     background-color: rgb(221, 221, 221);
     min-height: 98vh;
@@ -109,3 +111,16 @@ footer {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
+.events {
+    display: flex;
+    justify-content: start;
+    margin: 10px;
+    padding: 3px;
+}
+
+.events img {
+    width: 200px;
+    border-radius: 10px;
+    margin-right: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}

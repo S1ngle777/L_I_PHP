@@ -1,13 +1,7 @@
 <?php
-// Подключение к базе данных
-$db = new PDO('mysql:host=localhost;dbname=event_platform', 'root', '123qweasd');
 
-// Проверка, авторизован ли пользователь
-if (!isset($_COOKIE['token'])) {
-    // Перенаправление на страницу авторизации
-    header("Location: /autorisation.php");
-    exit;
-}
+require __DIR__ . '/../../handlers/db-connection.php';
+
 
 // Получение пользователя по токену
 $query = $db->prepare('SELECT * FROM users WHERE token = ?');
@@ -17,7 +11,7 @@ $user = $query->fetch(PDO::FETCH_ASSOC);
 // Проверка, является ли пользователь менеджером
 if (!$user || $user['role_id'] != '1') {
     // Перенаправление на страницу авторизации
-    header("Location: /autorisation.php");
+    header("Location: /views/pages/autorisation.php");
     exit;
 }
 ?>
@@ -30,13 +24,16 @@ if (!$user || $user['role_id'] != '1') {
             <select id="action-select">
                 <option value="add">Добавить мероприятие</option>
                 <option value="edit">Редактировать мероприятие</option>
+                <option value="delete">Удалить мероприятие</option>
                 <option value="create_user">Создать пользователя</option>
             </select>
         </form>
 
         <!-- Форма добавления мероприятия -->
-        <form action="/handlers/admin-panel-handler.php" method="post" id="add-form" style="display: none;">
+        <form action="/handlers/admin-panel-handler.php" method="post" id="add" style="display: none;" enctype="multipart/form-data">
             <h2>Добавление мероприятия</h2>
+            <label for="image">Изображение:</label>
+            <input type="file" id="image" name="image">
             <input type="hidden" name="action" value="add">
             <label for="name">Название мероприятия:</label>
             <input type="text" id="name" name="name" autocomplete="off">
@@ -50,7 +47,7 @@ if (!$user || $user['role_id'] != '1') {
         </form>
 
         <!-- Форма редактирования мероприятия -->
-        <form action="/handlers/admin-panel-handler.php" method="post" id="edit-form" style="display: none;">
+        <form action="/handlers/admin-panel-handler.php" method="post" id="edit" style="display: none;" enctype="multipart/form-data">
             <h2>Редактирование мероприятия</h2>
             <input type="hidden" name="action" value="edit">
             <label for="event-select">Выберите мероприятие:</label>
@@ -66,6 +63,8 @@ if (!$user || $user['role_id'] != '1') {
 
                 ?>
             </select>
+            <label for="image">Изображение:</label>
+            <input type="file" id="image" name="image">
             <label for="name">Название мероприятия:</label>
             <input type="text" id="name" name="name" autocomplete="off">
             <label for="price">Цена:</label>
@@ -77,6 +76,7 @@ if (!$user || $user['role_id'] != '1') {
             <input type="submit" value="Сохранить">
         </form>
 
+        <!-- Форма создания нового пользователя -->
         <form action="/handlers/admin-panel-handler.php" method="post" id="create-user-form" style="display: none;">
             <h2>Создание нового пользователя</h2>
             <input type="hidden" name="action" value="create_user" autocomplete="off">
@@ -95,7 +95,29 @@ if (!$user || $user['role_id'] != '1') {
             </select>
             <input type="submit" value="Создать">
         </form>
+
+        <!-- Форма удаления мероприятия -->
+        <form action="/handlers/admin-panel-handler.php" method="post" id="delete" style="display: none;">
+            <h2>Удаление мероприятия</h2>
+            <input type="hidden" name="action" value="delete">
+            <label for="event-select-delete">Выберите мероприятие:</label>
+            <select id="event-select-delete" name="id">
+                <?php
+                // Получение текущих мероприятий
+                $query = $db->query('SELECT * FROM events');
+                $events = $query->fetchAll(PDO::FETCH_ASSOC);
+
+                foreach ($events as $event) {
+                    echo "<option value=\"{$event['id']}\">{$event['name']}</option>";
+                }
+
+                ?>
+            </select>
+            <input type="submit" value="Удалить">
+        </form>
     </div>
+
+
 
     <!-- Просмотр зарегистрированных на мероприятие. -->
 
@@ -153,8 +175,9 @@ if (!$user || $user['role_id'] != '1') {
 
 <script>
     document.getElementById('action-select').addEventListener('change', function() {
-        document.getElementById('add-form').style.display = this.value === 'add' ? 'block' : 'none';
-        document.getElementById('edit-form').style.display = this.value === 'edit' ? 'block' : 'none';
+        document.getElementById('add').style.display = this.value === 'add' ? 'block' : 'none';
+        document.getElementById('edit').style.display = this.value === 'edit' ? 'block' : 'none';
+        document.getElementById('delete').style.display = this.value === 'delete' ? 'block' : 'none';
         document.getElementById('create-user-form').style.display = this.value === 'create_user' ? 'block' : 'none';
     });
 </script>

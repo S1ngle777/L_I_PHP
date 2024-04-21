@@ -12,8 +12,7 @@
 
     <div>
         <?php
-        // Подключение к базе данных
-        $db = new PDO('mysql:host=localhost;dbname=event_platform', 'root', '123qweasd');
+        require __DIR__ . '/../../handlers/db-connection.php';
         // Получение пользователя по токену
         $query = $db->prepare('SELECT * FROM users WHERE token = ?');
         $query->execute([$_COOKIE['token']]);
@@ -22,6 +21,9 @@
         if ($user) : ?>
             <div class="blocks">
                 <a href="/handlers/logout-handler.php">Выйти</a>
+            </div>
+            <div class="blocks">
+                <a href="/views/pages/user-profile.php">Личный кабинет</a>
             </div>
             <?php if ($user['role_id'] == '1') : ?>
                 <div class="blocks">

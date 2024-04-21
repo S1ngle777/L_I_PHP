@@ -2,8 +2,7 @@
 // Получение токена из cookies
 $token = $_COOKIE['token'];
 
-// Подключение к базе данных
-$db = new PDO('mysql:host=localhost;dbname=event_platform', 'root', '123qweasd');
+require __DIR__ . '/db-connection.php';
 
 // Удаление токена из базы данных
 $query = $db->prepare('UPDATE users SET token = NULL WHERE token = ?');
