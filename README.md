@@ -7,7 +7,7 @@
     - [Список использованных источников](#список-использованных-источников)
 
 ## Инструкции по запуску проекта
-1) Склонируйте репозиторий с проектом: git clone [https://github.com/S1ngle777/Lab_9_PHP.git](https://github.com/S1ngle777/L_I_PHP).
+1) Склонируйте репозиторий с проектом: git clone [https://github.com/S1ngle777/L_I_PHP.git](https://github.com/S1ngle777/L_I_PHP).
 2) Запустите веб-сервер: php -S localhost:80.
 3) Откройте браузер и перейдите по адресу http://localhost/views/pages для доступа к сайту.
 
